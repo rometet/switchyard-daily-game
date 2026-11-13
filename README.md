@@ -46,7 +46,7 @@ node tests/switchyard-test.cjs
 node --experimental-strip-types --no-warnings=ExperimentalWarning tests/replay-test.mjs
 ```
 
-To test and upload **after the account owner has approved the required Terms and authenticated**:
+The app has been uploaded privately as **switchyard-rome** and installed on **r/switchyard_rome_dev**. Local code still uses the following authenticated Devvit developer workflow:
 
 ```bash
 npm run login
@@ -55,7 +55,7 @@ npm run dev
 # When ready: npm run deploy
 ```
 
-The Reddit Game of the Day Hackathon **does not require or recommend publishing** a broadly public app before the deadline. After uploading and playtesting, attach the new `developers.reddit.com/apps/{app-name}` link, a playable test post, this README and a descriptive project write-up to the Devpost entry.
+The Reddit Game of the Day Hackathon **does not require publishing** the app publicly before the deadline. The private Devvit app and actual Reddit playtest post are available at https://developers.reddit.com/apps/switchyard-rome and https://www.reddit.com/r/switchyard_rome_dev/comments/1xv4zw2/switchyard_daily_circuit_puzzle/ . The test subreddit was automatically created as **private**; a request to make it public for judge access is pending Reddit review. The competition entry on Devpost has not yet been submitted. See DEVPOST_ENTRY.md for live status.
 
 ## Contest and copyright note
 

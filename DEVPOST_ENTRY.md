@@ -1,6 +1,6 @@
 # SWITCHYARD — Devpost Submission Draft
 
-STATUS: PREPARED, NOT SUBMITTED. The official Reddit Game of the Day Hackathon requires a private Devvit app listing, a public test subreddit, a working Reddit post and a Devpost entry. Do not invent or omit those URLs.
+STATUS: REDDIT DEVVIT APP UPLOADED AND PLAYTESTED, DEVPOST NOT JOINED OR SUBMITTED. The original test subreddit is still private; a request to make it public was submitted November 13, 2026, and is awaiting Reddit moderator review. Do not claim contest entry or prize qualification yet.
 
 Competition: Reddit Game of the Day Hackathon 2026
 Deadline: December 8, 2026, 18:00 PST
@@ -34,13 +34,15 @@ Devvit Web 0.15.3, a React inline splash screen, HTML/CSS/JavaScript expanded ga
 This is a working interactive puzzle, not a prototype image. Build, lint, type checks and gameplay tests all pass. It uses no third-party ads, telemetry or proprietary assets.
 
 ## Next steps
-Private Devvit upload, Reddit playtest, a second-account leaderboard verification, and completing the Devpost submission before deadline.
+Reddit Devvit app version 0.0.1 was uploaded and playtest version 0.0.1.2 rendered in the actual Reddit post. A real tile click incremented the in-game rotation counter from 0 to 1. Await public subreddit approval, verify leaderboard with a second authorized Reddit account, and finish Devpost entry with account-owner participation.
 
 ## Links
 Code: https://github.com/rometet/switchyard-daily-game
 Playable standalone preview: https://rometet.github.io/remote-services/tools/switchyard.html
-Devvit listing: PENDING AUTHENTICATED UPLOAD
-Public test subreddit and live game post: PENDING AUTHENTICATED PLAYTEST
+Devvit app listing (uploaded privately): https://developers.reddit.com/apps/switchyard-rome
+Reddit test subreddit (PRIVATE, public status change REQUESTED): https://www.reddit.com/r/switchyard_rome_dev/
+Reddit playable post (confirmed in owner playtest; others cannot access yet): https://www.reddit.com/r/switchyard_rome_dev/comments/1xv4zw2/switchyard_daily_circuit_puzzle/
+Owner playtest preview: https://www.reddit.com/r/switchyard_rome_dev/?playtest=switchyard-rome
 Screenshots: docs/switchyard-mobile.png ; docs/switchyard-desktop.png
 Optional demo video: NOT RECORDED — should show actual Reddit app operation, under 60 seconds
 
@@ -55,9 +57,12 @@ AI assistance was used for design, implementation, testing and documentation. No
 - [x] 30-date replay and parity test pass
 - [x] 320 / 390 / 430 / 768px mobile and desktop UI verification
 - [x] Public GitHub source
-- [ ] Reddit OAuth login
-- [ ] Private Devvit app upload
-- [ ] Public subreddit (<200 users) and working post
+- [x] Reddit OAuth login, authenticated as u/Rome6882
+- [x] Private Devvit app upload (v0.0.1)
+- [x] Working test subreddit and owner-visible Reddit game post
+- [x] Real Reddit inline/expanded game display and tile rotation verified
+- [ ] Subreddit publicly visible to judges (approval request sent; still private)
 - [ ] Second Reddit account leaderboard test
-- [ ] Devpost registration, terms and actual submission
+- [ ] Devpost account sign-in and entrant acceptance of contest terms (human account owner)
+- [ ] Devpost competition registration / formal project submission
 - [ ] Prize award and payout, if any
