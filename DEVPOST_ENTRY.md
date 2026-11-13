@@ -1,6 +1,6 @@
 # SWITCHYARD — Devpost Submission Draft
 
-STATUS: REDDIT DEVVIT APP UPLOADED AND PLAYTESTED, DEVPOST NOT JOINED OR SUBMITTED. The original test subreddit is still private; a request to make it public was submitted November 13, 2026, and is awaiting Reddit moderator review. Do not claim contest entry or prize qualification yet.
+STATUS (2026-11-14 JST): REDDIT DEVVIT UPLOADED AND PLAYTESTED; DEVPOST COMPETITION JOINED AND PROJECT FORMALLY SUBMITTED at https://devpost.com/software/switchyard-daily-circuit-puzzle (submission ID 1301614). The public test subreddit request remains pending Reddit moderator review; judge-access eligibility is still unresolved. Prize selection and payout are not guaranteed.
 
 Competition: Reddit Game of the Day Hackathon 2026
 Deadline: December 8, 2026, 18:00 PST
@@ -34,9 +34,10 @@ Devvit Web 0.15.3, a React inline splash screen, HTML/CSS/JavaScript expanded ga
 This is a working interactive puzzle, not a prototype image. Build, lint, type checks and gameplay tests all pass. It uses no third-party ads, telemetry or proprietary assets.
 
 ## Next steps
-Reddit Devvit app version 0.0.1 was uploaded and playtest version 0.0.1.2 rendered in the actual Reddit post. A real tile click incremented the in-game rotation counter from 0 to 1. Await public subreddit approval, verify leaderboard with a second authorized Reddit account, and finish Devpost entry with account-owner participation.
+Reddit Devvit app version 0.0.1 was uploaded and playtest version 0.0.1.2 rendered in the actual Reddit post. A real tile click incremented the in-game rotation counter from 0 to 1. Await public subreddit approval, verify leaderboard with a second authorized Reddit account, and keep the successfully submitted Devpost project updated before the deadline.
 
 ## Links
+Official submitted Devpost project: https://devpost.com/software/switchyard-daily-circuit-puzzle
 Code: https://github.com/rometet/switchyard-daily-game
 Playable standalone preview: https://rometet.github.io/remote-services/tools/switchyard.html
 Devvit app listing (uploaded privately): https://developers.reddit.com/apps/switchyard-rome
@@ -63,6 +64,6 @@ AI assistance was used for design, implementation, testing and documentation. No
 - [x] Real Reddit inline/expanded game display and tile rotation verified
 - [ ] Subreddit publicly visible to judges (approval request sent; still private)
 - [ ] Second Reddit account leaderboard test
-- [ ] Devpost account sign-in and entrant acceptance of contest terms (human account owner)
-- [ ] Devpost competition registration / formal project submission
+- [x] Devpost sign-in via Google and explicit entrant authorization to accept the contest terms (2026-11-14 JST)
+- [x] Devpost competition registration and formal project submission (2026-11-14 JST; submission ID 1301614)
 - [ ] Prize award and payout, if any
