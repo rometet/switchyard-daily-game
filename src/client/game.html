@@ -19,8 +19,8 @@
 <div class="legend"><span class="key"><i class="dot"></i>Powered circuit</span><span class="key"><i class="dot dim"></i>Disconnected</span><span>Tap ↻ clockwise</span></div>
 </section>
 <div id="status" class="message" role="status" aria-live="polite">Route the current from START to EXIT. There is always a solution.</div>
-<div class="toolbar"><button class="btn" type="button" id="hint">⚡ Hint (+3)</button><button class="btn" type="button" id="reset">↻ Restart</button><button class="btn primary" type="button" id="share">Share result</button></div>
-<section class="leaderboard" aria-label="Reddit community leaderboard"><h2>🏆 TODAY'S TOP 10 <span>FEWEST TURNS WINS</span></h2><div id="leaderboard-list" aria-live="polite">Loading community scores…</div><p class="leaderboard-note">Only unassisted, replay-verified finishes are ranked. Use Restart for a fresh competitive run.</p></section>
+<div class="toolbar"><button class="btn" type="button" id="hint">⚡ Hint (+3)</button><button class="btn" type="button" id="reset">↻ Restart</button><button class="btn primary" type="button" id="share">Share result</button><button class="btn" type="button" id="retry" hidden>Retry score</button></div>
+<section class="leaderboard" aria-label="Reddit community leaderboard"><h2>🏆 TODAY'S TOP 10 <span>FEWEST TURNS WINS</span></h2><p id="community-count" class="community-count">⚡ Be first to finish today!</p><div id="leaderboard-list" aria-live="polite">Loading community scores…</div><p class="leaderboard-note">Only unassisted, replay-verified finishes are ranked. Use Restart for a fresh competitive run.</p></section>
 <footer>Daily puzzle is generated deterministically from UTC date. No account, tracking scripts, adverts, or external assets. Play with your community.</footer>
 </main>
 <script type="module" src="./switchyard.js"></script>

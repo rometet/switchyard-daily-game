@@ -62,3 +62,11 @@ The Reddit Game of the Day Hackathon **does not require or recommend publishing*
 Prepared for the [Reddit Game of the Day Hackathon](https://redditgameofday2026.devpost.com/), deadline 2026-12-08 18:00 PST. AI assistance was used to develop and test the code; the app is an original game, not a copy of another game's graphics or a copyrighted brand. Winning is never guaranteed. A person who controls the Reddit/Devpost accounts must explicitly accept provider terms and handle any required legal, tax or payment verification.
 
 © 2026 rometet. Original game logic. Upstream Devvit template licensing retained in LICENSE.
+
+## Visual preview
+
+![Mobile gameplay](docs/switchyard-mobile.png)
+
+![Desktop gameplay](docs/switchyard-desktop.png)
+
+Competition form content and completion checklist: [DEVPOST_ENTRY.md](DEVPOST_ENTRY.md).

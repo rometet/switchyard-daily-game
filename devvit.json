@@ -1,6 +1,6 @@
 {
     "$schema":  "https://developers.reddit.com/schema/config-file.v1.json",
-    "name":  "switchyard-daily-rome",
+    "name":  "switchyard-rome",
     "post":  {
                  "dir":  "dist/client",
                  "entrypoints":  {
@@ -34,5 +34,11 @@
     "scripts":  {
                     "dev":  "vite build --watch",
                     "build":  "vite build"
-                }
+                },
+    "permissions":  {
+                        "reddit":  {
+                                       "enable":  true
+                                   },
+                        "redis":  true
+                    }
 }

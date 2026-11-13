@@ -8,6 +8,11 @@ const leaderboardKey = (day: string) => {
   const subreddit = (context.subredditName ?? 'reddit').toLowerCase().replace(/[^a-z0-9_]/g, '').slice(0, 40);
   return `switchyard:score:v1:${subreddit}:${day}`;
 };
+function postUrl(): string | null {
+  const id = context.postId?.replace(/^t3_/, '');
+  const subreddit = context.subredditName;
+  return id && subreddit ? `https://www.reddit.com/r/${encodeURIComponent(subreddit)}/comments/${encodeURIComponent(id)}/` : null;
+}
 async function getTop(day: string) {
   const rows = await redis.zRange(leaderboardKey(day), 0, 9, { by: 'rank' });
   return rows.map((x, i) => ({ rank: i + 1, username: x.member, moves: x.score }));
@@ -15,10 +20,10 @@ async function getTop(day: string) {
 api.get('/leaderboard', async (c) => {
   try {
     const day = todayUtc();
-    const [leaders, username] = await Promise.all([
-      getTop(day), reddit.getCurrentUsername().catch(() => null)
+    const [leaders, username, players] = await Promise.all([
+      getTop(day), reddit.getCurrentUsername().catch(() => null), redis.zCard(leaderboardKey(day))
     ]);
-    return c.json({ day, leaders, viewer: username ?? null });
+    return c.json({ day, leaders, players, viewer: username ?? null, postUrl: postUrl() });
   } catch (error) {
     console.error('Switchyard leaderboard error', error);
     return c.json({ error: 'Leaderboard currently unavailable' }, 503);
@@ -42,7 +47,8 @@ api.post('/score', async (c) => {
       await redis.zAdd(key, { member: username, score: result.moves });
       await redis.expire(key, 86400 * 8);
     }
-    return c.json({ verified: true, day, moves: result.moves, leaders: await getTop(day) });
+    const [leaders, players] = await Promise.all([getTop(day), redis.zCard(key)]);
+    return c.json({ verified: true, day, moves: result.moves, leaders, players, postUrl: postUrl() });
   } catch (error) {
     console.error('Switchyard score save error', error);
     return c.json({ error: 'Score service is currently unavailable' }, 503);

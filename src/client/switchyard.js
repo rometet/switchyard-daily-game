@@ -3,7 +3,7 @@
 'use strict';
 var N=5,S=10,T=14,DIRS=[[-1,0],[0,1],[1,0],[0,-1]],BACK=[2,3,0,1];
 var utcDate=new Date().toISOString().slice(0,10),dayCode=utcDate.replace(/-/g,'');
-var root=document.getElementById('board'),tiles=[],goal=[],path=[],moves=0,hints=0,win=false,started=Date.now(),rotationLog=[],rankedEligible=true,submitted=false,historyKey='switchyard-v2-'+utcDate;
+var root=document.getElementById('board'),tiles=[],goal=[],path=[],moves=0,hints=0,win=false,started=Date.now(),rotationLog=[],rankedEligible=true,submitted=false,shareTargetUrl='https://rometet.github.io/remote-services/tools/switchyard.html',historyKey='switchyard-v2-'+utcDate;
 function el(id){return document.getElementById(id)}
 function hash(s){var h=2166136261;for(var i=0;i<s.length;i++){h=Math.imul(h^s.charCodeAt(i),16777619)}return h>>>0}
 var seed=hash('switchyard:'+utcDate),random=function(){seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296}
@@ -57,6 +57,8 @@ el('status').className='message win';el('status').textContent='⚡ Circuit compl
 }
 
 function setLeaderboard(data){
+ if(data&&typeof data.postUrl==='string'&&data.postUrl.startsWith('https://www.reddit.com/r/'))shareTargetUrl=data.postUrl;
+ var count=el('community-count');if(count&&data&&Number.isInteger(data.players)){count.textContent=data.players===0?'⚡ Be first to finish today!':'⚡ '+data.players+' players completed today!'}
  var box=el('leaderboard-list');if(!box)return;box.textContent='';
  if(!data||!Array.isArray(data.leaders)||!data.leaders.length){box.textContent='No verified scores yet — be first!';return}
  data.leaders.slice(0,10).forEach(function(item,i){
@@ -73,10 +75,11 @@ function loadLeaderboard(){
 }
 function postScore(){
  if(typeof fetch!=='function')return;
+ el('retry').hidden=true;
  fetch('/api/score',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({day:utcDate,rotations:rotationLog})})
  .then(function(r){if(!r.ok)throw Error('Score not saved');return r.json()})
  .then(function(data){setLeaderboard(data);if(data.verified)el('status').textContent+=' 🏆 Verified score added to the Reddit leaderboard.'})
- .catch(function(){el('status').textContent+=' (Local win saved; Reddit score unavailable.)'});
+ .catch(function(){submitted=false;persist();el('retry').hidden=false;el('status').textContent+=' (Local win saved; Reddit score unavailable. Tap Retry score.)'});
 }
 
 function rotateClick(evt){if(win)return;var i=Number(evt.currentTarget.dataset.index);tiles[i].turn=(tiles[i].turn+1)%4;moves++;rotationLog.push(i);if(rotationLog.length>250)rankedEligible=false;persist();render()}
@@ -88,10 +91,10 @@ var i=incorrect[Math.floor(random()*incorrect.length)],rotation=0;for(var t=0;t<
 var old=tiles[i].turn;for(var q=0;q<4;q++){if(rotate(tiles[i].base,q).slice().sort().join(',')===goal[i].slice().sort().join(',')){tiles[i].turn=q;break}}
 if(tiles[i].turn===old)return;rankedEligible=false;hints++;moves+=3;persist();render();var node=root.children[i];if(node){node.focus();node.style.boxShadow='0 0 0 2px #f4c46b';setTimeout(function(){node.style.boxShadow=''},900)}}
 function reset(){seed=hash('switchyard:'+utcDate);determine();moves=0;hints=0;win=false;rotationLog=[];rankedEligible=true;submitted=false;started=Date.now();persist();render()}
-async function share(){var text='SWITCHYARD '+utcDate+'\n'+(win?'⚡ Connected in '+moves+' rotations · '+hints+' hints':'🔧 Still connecting the circuit')+'\nPlay: https://rometet.github.io/remote-services/tools/switchyard.html';
+async function share(){var text='SWITCHYARD '+utcDate+'\n'+(win?'⚡ Connected in '+moves+' rotations · '+hints+' hints':'🔧 Still connecting the circuit')+'\nPlay: '+shareTargetUrl;
 try{await navigator.clipboard.writeText(text);el('status').textContent='Result copied — share with your friends!'}catch(e){window.prompt('Copy this result:',text)}}
 el('day').textContent='DAILY '+dayCode;determine();
 try{var saved=JSON.parse(localStorage.getItem(historyKey)||'null');if(saved&&Array.isArray(saved.turns)&&saved.turns.length===N*N){for(var i=0;i<N*N;i++){var v=Number(saved.turns[i]);if(Number.isInteger(v)&&v>=0&&v<=3)tiles[i].turn=v}moves=Number(saved.moves)||0;hints=Number(saved.hints)||0;started=Number(saved.started)||Date.now();win=Boolean(saved.win);rotationLog=Array.isArray(saved.rotationLog)?saved.rotationLog:[];rankedEligible=Boolean(saved.rankedEligible);submitted=Boolean(saved.submitted)}}catch(e){}
 if(win){var count=streak();el('status').className='message win';el('status').textContent='⚡ Today\'s circuit completed in '+moves+' rotations! Your streak: '+count+'.'}
-el('hint').addEventListener('click',hint);el('reset').addEventListener('click',reset);el('share').addEventListener('click',share);render();loadLeaderboard();
+el('hint').addEventListener('click',hint);el('reset').addEventListener('click',reset);el('share').addEventListener('click',share);el('retry').addEventListener('click',function(){if(win&&rankedEligible&&!submitted){submitted=true;persist();postScore()}});render();loadLeaderboard();
 })();
