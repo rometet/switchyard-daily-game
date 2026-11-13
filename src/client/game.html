@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101929">
+<title>Switchyard — Daily Circuit Puzzle</title>
+<link rel="stylesheet" href="./switchyard.css">
+</head>
+<body>
+<main>
+<header>
+<div class="brand"><span class="mark" aria-hidden="true">ϟ</span><div><p class="small">One puzzle. Every day.</p><h1>SWITCHYARD</h1></div></div>
+<div class="pill" id="day">DAILY #—</div>
+</header>
+<section class="hero"><p class="small">DAILY CIRCUIT CHALLENGE</p><h2>Power the other side.</h2><p>Tap tiles to rotate their wires. Connect the <b>START</b> on the left to <b>EXIT</b> on the right. Every turn counts. A new circuit awaits each UTC day.</p></section>
+<div class="stats"><div class="stat"><strong id="moves">0</strong><span>Rotations</span></div><div class="stat"><strong id="flow">0 / 25</strong><span>Powered tiles</span></div><div class="stat"><strong id="streak">0</strong><span>Day streak</span></div></div>
+<section class="panel" aria-label="Interactive five by five circuit puzzle">
+<div id="board" class="grid" role="group" aria-label="Rotate circuit tiles"></div>
+<div class="legend"><span class="key"><i class="dot"></i>Powered circuit</span><span class="key"><i class="dot dim"></i>Disconnected</span><span>Tap ↻ clockwise</span></div>
+</section>
+<div id="status" class="message" role="status" aria-live="polite">Route the current from START to EXIT. There is always a solution.</div>
+<div class="toolbar"><button class="btn" type="button" id="hint">⚡ Hint (+3)</button><button class="btn" type="button" id="reset">↻ Restart</button><button class="btn primary" type="button" id="share">Share result</button></div>
+<section class="leaderboard" aria-label="Reddit community leaderboard"><h2>🏆 TODAY'S TOP 10 <span>FEWEST TURNS WINS</span></h2><div id="leaderboard-list" aria-live="polite">Loading community scores…</div><p class="leaderboard-note">Only unassisted, replay-verified finishes are ranked. Use Restart for a fresh competitive run.</p></section>
+<footer>Daily puzzle is generated deterministically from UTC date. No account, tracking scripts, adverts, or external assets. Play with your community.</footer>
+</main>
+<script type="module" src="./switchyard.js"></script>
+</body></html>

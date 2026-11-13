@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101929">
+<title>Switchyard — Daily Circuit Puzzle</title>
+<style>
+:root{font-family:Inter,ui-sans-serif,system-ui,sans-serif;color:#eaf4ff;background:#101929}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 0%,#263955 0,#101929 68%);padding:24px 12px}
+main{max-width:550px;margin:auto}header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}
+h1{font-size:clamp(27px,7vw,38px);line-height:1;margin:0;font-weight:900;letter-spacing:-1.4px}.brand{display:flex;gap:12px;align-items:center}
+.mark{background:#64f1ce;color:#072d36;font-size:25px;font-weight:900;border-radius:15px;width:49px;height:49px;display:grid;place-items:center;box-shadow:0 0 26px #44edc155}
+.small{color:#9aacc5;font-size:11px;letter-spacing:2px;font-weight:800;text-transform:uppercase;margin:0 0 4px}
+.pill{background:#1c2d47;border:1px solid #3a5171;padding:8px 10px;border-radius:30px;color:#bed4e9;font-size:12px;font-weight:700;white-space:nowrap}
+.hero{border:1px solid #344760;border-radius:22px;padding:18px 17px;background:linear-gradient(140deg,#20334e,#18263c)}
+.hero h2{font-size:21px;margin:0 0 5px}.hero p{color:#b2c3d8;margin:0;line-height:1.55;font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}.stat{background:#192942;border:1px solid #2b405a;border-radius:15px;padding:13px 12px}
+.stat strong{display:block;font-size:26px;letter-spacing:-.8px;font-variant-numeric:tabular-nums}.stat span{display:block;color:#96abc3;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.panel{padding:12px;border-radius:22px;background:#233751;border:1px solid #3e5472;box-shadow:0 18px 65px #0005;position:relative}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}.tile{aspect-ratio:1;border:1px solid #394d67;border-radius:13px;background:#15243a;position:relative;cursor:pointer;min-width:0;padding:0;display:grid;place-items:center;transition:transform .12s,background .12s,border-color .12s;color:#8295aa}
+.tile:hover{transform:scale(1.035);border-color:#92b3d0}.tile:active{transform:scale(.97)}.tile:focus-visible{outline:3px solid #f7ca6a;outline-offset:1px}
+.tile svg{width:100%;height:100%;overflow:visible}.tile .wire{stroke:#536c88;stroke-width:15;stroke-linecap:round}.tile .hub{fill:#536c88}
+.tile.live{background:#173a46;border-color:#4bbca6}.tile.live .wire{stroke:#61f7d2;filter:drop-shadow(0 0 5px #65ffbd80)}.tile.live .hub{fill:#d9fff2}
+.tile.terminal{border-color:#e6bb65}.tile.terminal:after{position:absolute;bottom:3px;right:4px;font-size:9px;letter-spacing:.2px;font-weight:800;color:#ffe0a0;content:attr(data-badge)}
+footer{color:#7e93ad;text-align:center;font-size:12px;line-height:1.7;margin:19px 0}.footlink{color:#a3c7ef}
+.toolbar{display:flex;gap:9px;margin-top:13px}.btn{border:0;border-radius:13px;background:#2b405b;color:#eaf4ff;padding:13px 14px;font:inherit;font-size:13px;font-weight:800;cursor:pointer;flex:1}
+.btn.primary{background:#66f1cf;color:#07332e}.btn:disabled{opacity:.45;cursor:not-allowed}
+.message{margin:14px 0 0;border-radius:14px;background:#16263c;color:#aec3d9;border:1px solid #2a435e;padding:12px 13px;min-height:48px;font-size:13px;line-height:1.5}
+.message.win{background:#10443b;border-color:#61f7d2;color:#d3ffeb}
+.legend{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:11px 3px 3px;color:#a9bfd4;font-size:11px;font-weight:700}.key{display:inline-flex;align-items:center;gap:6px}.dot{height:8px;width:8px;border-radius:99px;background:#62f0cb}.dot.dim{background:#6e86a1}
+@media(max-width:420px){.tile{border-radius:9px}.grid{gap:4px}h1{font-size:26px}.brand{gap:7px}.mark{width:40px;height:40px;font-size:21px}.hero{padding:14px}.toolbar{flex-wrap:wrap}.btn{min-width:100px}}
+@media(prefers-reduced-motion:reduce){.tile{transition:none}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<div class="brand"><span class="mark" aria-hidden="true">ϟ</span><div><p class="small">One puzzle. Every day.</p><h1>SWITCHYARD</h1></div></div>
+<div class="pill" id="day">DAILY #—</div>
+</header>
+<section class="hero"><p class="small">DAILY CIRCUIT CHALLENGE</p><h2>Power the other side.</h2><p>Tap tiles to rotate their wires. Connect the <b>START</b> on the left to <b>EXIT</b> on the right. Every turn counts. A new circuit awaits each UTC day.</p></section>
+<div class="stats"><div class="stat"><strong id="moves">0</strong><span>Rotations</span></div><div class="stat"><strong id="flow">0 / 25</strong><span>Powered tiles</span></div><div class="stat"><strong id="streak">0</strong><span>Day streak</span></div></div>
+<section class="panel" aria-label="Interactive five by five circuit puzzle">
+<div id="board" class="grid" role="group" aria-label="Rotate circuit tiles"></div>
+<div class="legend"><span class="key"><i class="dot"></i>Powered circuit</span><span class="key"><i class="dot dim"></i>Disconnected</span><span>Tap ↻ clockwise</span></div>
+</section>
+<div id="status" class="message" role="status" aria-live="polite">Route the current from START to EXIT. There is always a solution.</div>
+<div class="toolbar"><button class="btn" type="button" id="hint">⚡ Hint (+3)</button><button class="btn" type="button" id="reset">↻ Restart</button><button class="btn primary" type="button" id="share">Share result</button></div>
+<footer>Daily puzzle is generated deterministically from UTC date. No account, tracking scripts, adverts, or external assets. <a class="footlink" href="../index.html">More tools</a>.</footer>
+</main>
+<script>
+(function(){
+'use strict';
+var N=5,S=10,T=14,DIRS=[[-1,0],[0,1],[1,0],[0,-1]],BACK=[2,3,0,1];
+var utcDate=new Date().toISOString().slice(0,10),dayCode=utcDate.replace(/-/g,'');
+var root=document.getElementById('board'),tiles=[],goal=[],path=[],moves=0,hints=0,win=false,started=Date.now(),historyKey='switchyard-v1-'+utcDate;
+function el(id){return document.getElementById(id)}
+function hash(s){var h=2166136261;for(var i=0;i<s.length;i++){h=Math.imul(h^s.charCodeAt(i),16777619)}return h>>>0}
+var seed=hash('switchyard:'+utcDate),random=function(){seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+function neighbor(i,d){var r=Math.floor(i/N),c=i%N,rr=r+DIRS[d][0],cc=c+DIRS[d][1];return rr<0||cc<0||rr>=N||cc>=N?-1:rr*N+cc}
+function buildPath(){
+for(var attempt=0;attempt<350;attempt++){
+var seen=new Set([S]),p=[S];
+function visit(cur){if(cur===T)return p.length>=10&&p.length<=19; if(p.length>=19)return false;
+var ds=shuffle([0,1,2,3]);for(var k=0;k<ds.length;k++){var nxt=neighbor(cur,ds[k]);if(nxt<0||seen.has(nxt))continue;seen.add(nxt);p.push(nxt);if(visit(nxt))return true;p.pop();seen.delete(nxt)}return false}
+if(visit(S))return p.slice();
+}
+return [10,11,6,7,8,13,12,17,18,19,14];
+}
+function rotate(conn,turn){return conn.map(function(d){return(d+turn)%4})}
+function determine(){
+path=buildPath();goal=new Array(N*N);
+for(var i=0;i<N*N;i++){var idx=path.indexOf(i),connections=[];
+if(idx>=0){if(idx>0)for(var d=0;d<4;d++)if(neighbor(i,d)===path[idx-1])connections.push(d);
+if(idx<path.length-1)for(var e=0;e<4;e++)if(neighbor(i,e)===path[idx+1])connections.push(e);
+}else{var a=Math.floor(random()*4);connections=[a,(a+1+Math.floor(random()*3))%4]}
+goal[i]=connections;
+}
+tiles=goal.map(function(conns){return {base:conns.slice(),turn:Math.floor(random()*4)}})
+}
+function connections(i){return rotate(tiles[i].base,tiles[i].turn)}
+function powered(){
+var reached=new Set([S]),queue=[S];
+while(queue.length){var pos=queue.shift(),con=connections(pos);
+for(var a=0;a<con.length;a++){var d=con[a],next=neighbor(pos,d);if(next<0||reached.has(next))continue;
+if(connections(next).indexOf(BACK[d])!==-1){reached.add(next);queue.push(next)}
+}}
+return reached}
+function segments(i,lit){var ds=connections(i),lines='';
+for(var k=0;k<ds.length;k++){var p=[[50,5],[95,50],[50,95],[5,50]][ds[k]];
+lines+='<line class="wire" x1="50" y1="50" x2="'+p[0]+'" y2="'+p[1]+'"/>'}
+return '<svg viewBox="0 0 100 100" aria-hidden="true"><g>'+lines+'<circle class="hub" cx="50" cy="50" r="8"/></g></svg>'}
+function streak(){try{var d=JSON.parse(localStorage.getItem('switchyard-streak')||'{}');return d.count||0}catch(e){return 0}}
+function persist(){try{localStorage.setItem(historyKey,JSON.stringify({turns:tiles.map(function(t){return t.turn}),moves:moves,hints:hints,win:win,started:started}))}catch(e){}}
+function render(){
+var live=powered();root.innerHTML='';
+for(var i=0;i<N*N;i++){var button=document.createElement('button');button.className='tile'+(live.has(i)?' live':'')+((i===S||i===T)?' terminal':'');
+button.type='button';button.dataset.index=String(i);button.dataset.badge=i===S?'START':i===T?'EXIT':'';
+button.setAttribute('aria-label','Row '+(Math.floor(i/N)+1)+', column '+(i%N+1)+(i===S?', start':i===T?', exit':'')+(live.has(i)?', powered':', not powered')+'. Rotate clockwise.');
+button.setAttribute('aria-pressed',live.has(i)?'true':'false');button.innerHTML=segments(i,live.has(i));button.addEventListener('click',rotateClick);button.disabled=win;root.appendChild(button)}
+el('moves').textContent=String(moves);el('flow').textContent=live.size+' / '+(N*N);el('streak').textContent=String(streak());
+el('hint').disabled=win;el('share').disabled=false;
+if(live.has(T)&&!win){win=true;el('hint').disabled=true;root.querySelectorAll('.tile').forEach(function(t){t.disabled=true});var sec=Math.max(1,Math.round((Date.now()-started)/1000));var s=currentStreak();
+el('status').className='message win';el('status').textContent='⚡ Circuit completed in '+moves+' rotations ('+hints+' hints). '+sec+'s. Streak: '+s+' day'+(s===1?'':'s')+'!';persist();
+}else if(!win){el('status').className='message';el('status').textContent='Only connected wires carry power. Find the shortest route and light up the EXIT.'}
+}
+function rotateClick(evt){if(win)return;var i=Number(evt.currentTarget.dataset.index);tiles[i].turn=(tiles[i].turn+1)%4;moves++;persist();render()}
+function currentStreak(){var yesterday=new Date(Date.parse(utcDate+'T00:00:00Z')-86400000).toISOString().slice(0,10);
+var count=1;try{var prev=JSON.parse(localStorage.getItem('switchyard-streak')||'{}');if(prev.last===utcDate)count=prev.count||1;else if(prev.last===yesterday)count=(prev.count||0)+1;localStorage.setItem('switchyard-streak',JSON.stringify({last:utcDate,count:count}))}catch(e){}return count}
+function hint(){if(win)return;var incorrect=path.filter(function(i){var x=connections(i).slice().sort().join(','),y=goal[i].slice().sort().join(',');return x!==y});
+if(!incorrect.length){el('status').textContent='All intended path tiles are aligned. Rotate connected branches to complete the circuit.';return}
+var i=incorrect[Math.floor(random()*incorrect.length)],rotation=0;for(var t=0;t<4;t++){if(rotate(goal[i],t).slice().sort().join(',')===connections(i).slice().sort().join(',')){rotation=t;break}}
+var old=tiles[i].turn;for(var q=0;q<4;q++){if(rotate(tiles[i].base,q).slice().sort().join(',')===goal[i].slice().sort().join(',')){tiles[i].turn=q;break}}
+if(tiles[i].turn===old)return;hints++;moves+=3;persist();render();var node=root.children[i];if(node){node.focus();node.style.boxShadow='0 0 0 2px #f4c46b';setTimeout(function(){node.style.boxShadow=''},900)}}
+function reset(){tiles=goal.map(function(c){return{base:c.slice(),turn:Math.floor(random()*4)}});moves=0;hints=0;win=false;started=Date.now();persist();render()}
+async function share(){var text='SWITCHYARD '+utcDate+'\n'+(win?'⚡ Connected in '+moves+' rotations · '+hints+' hints':'🔧 Still connecting the circuit')+'\nPlay: https://rometet.github.io/remote-services/tools/switchyard.html';
+try{await navigator.clipboard.writeText(text);el('status').textContent='Result copied — share with your friends!'}catch(e){window.prompt('Copy this result:',text)}}
+el('day').textContent='DAILY '+dayCode;determine();
+try{var saved=JSON.parse(localStorage.getItem(historyKey)||'null');if(saved&&Array.isArray(saved.turns)&&saved.turns.length===N*N){for(var i=0;i<N*N;i++){var v=Number(saved.turns[i]);if(Number.isInteger(v)&&v>=0&&v<=3)tiles[i].turn=v}moves=Number(saved.moves)||0;hints=Number(saved.hints)||0;started=Number(saved.started)||Date.now();win=Boolean(saved.win)}}catch(e){}
+if(win){var count=streak();el('status').className='message win';el('status').textContent='⚡ Today\'s circuit completed in '+moves+' rotations! Your streak: '+count+'.'}
+el('hint').addEventListener('click',hint);el('reset').addEventListener('click',reset);el('share').addEventListener('click',share);render();
+})();
+</script>
+</body></html>
