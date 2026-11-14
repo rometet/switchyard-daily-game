@@ -1,6 +1,6 @@
 # SWITCHYARD — Daily Circuit Puzzle for Reddit
 
-**Status (2026-11-14 JST):** Official entry **submitted** to the 2026 Reddit Game of the Day Hackathon: https://devpost.com/software/switchyard-daily-circuit-puzzle . Devvit app v0.0.1 was uploaded and Reddit playtest was successful. The test subreddit remains private pending Reddit's public-access approval; judge access is not yet confirmed. No prize or payment is guaranteed.
+**Status (2026-11-14 JST):** Official entry **submitted** to the 2026 Reddit Game of the Day Hackathon: https://devpost.com/software/switchyard-daily-circuit-puzzle . Devvit app v0.0.1 was uploaded and Reddit playtest was successful. The subreddit moderator settings now display **Public** as of 2026-11-14 JST; actual judge-side gameplay should still be validated. No prize or payment is guaranteed.
 
 SWITCHYARD is an original five-by-five daily circuit puzzle. Rotate each tile until electricity flows from START on the left to EXIT on the right. Everybody in the same UTC day plays the same solvable challenge. The game is free, mobile friendly, keyboard-accessible, and has a Discord-style shareable result.
 
@@ -56,7 +56,7 @@ npm run dev
 # When ready: npm run deploy
 ```
 
-The Reddit Game of the Day Hackathon **does not require publishing** the app publicly before the deadline. The private Devvit app and actual Reddit playtest post are available at https://developers.reddit.com/apps/switchyard-rome and https://www.reddit.com/r/switchyard_rome_dev/comments/1xv4zw2/switchyard_daily_circuit_puzzle/ . The test subreddit was automatically created as **private**; a request to make it public for judge access is pending Reddit review. The entry **was submitted to Devpost on 2026-11-14 JST**: https://devpost.com/software/switchyard-daily-circuit-puzzle . Public subreddit approval and additional-player leaderboard testing remain outstanding. See DEVPOST_ENTRY.md for live status.
+The Reddit Game of the Day Hackathon **does not require publishing** the app publicly before the deadline. The private Devvit app and actual Reddit playtest post are available at https://developers.reddit.com/apps/switchyard-rome and https://www.reddit.com/r/switchyard_rome_dev/comments/1xv4zw2/switchyard_daily_circuit_puzzle/ . The test subreddit was initially created as private, but its moderator Privacy & Discovery settings now show **Public** (verified 2026-11-14 JST). The entry **was submitted to Devpost on 2026-11-14 JST**: https://devpost.com/software/switchyard-daily-circuit-puzzle . Public status is now confirmed in moderator settings; anonymous judge-side gameplay and additional-player leaderboard tests remain to be verified. See DEVPOST_ENTRY.md for live status.
 
 ## Contest and copyright note
 
