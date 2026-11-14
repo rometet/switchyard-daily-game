@@ -34,7 +34,7 @@ Devvit Web 0.15.3, a React inline splash screen, HTML/CSS/JavaScript expanded ga
 This is a working interactive puzzle, not a prototype image. Build, lint, type checks and gameplay tests all pass. It uses no third-party ads, telemetry or proprietary assets.
 
 ## Next steps
-Reddit Devvit app version 0.0.1 was uploaded and playtest version 0.0.1.2 rendered in the actual Reddit post. A real tile click incremented the in-game rotation counter from 0 to 1. Public subreddit status is confirmed in moderator settings; verify gameplay using a second authorized Reddit account, and keep the successfully submitted Devpost project updated before the deadline.
+Reddit Devvit app v0.0.1 was initially playtested; the tested code was re-uploaded and latest **v0.0.3 installed** to r/switchyard_rome_dev on 2026-11-14 JST. The initial playtest version 0.0.1.2 rendered in the actual Reddit post. A real tile click incremented the in-game rotation counter from 0 to 1. Public subreddit status is confirmed in moderator settings; verify gameplay using a second authorized Reddit account, and keep the successfully submitted Devpost project updated before the deadline.
 
 ## Links
 Official submitted Devpost project: https://devpost.com/software/switchyard-daily-circuit-puzzle
@@ -59,7 +59,7 @@ AI assistance was used for design, implementation, testing and documentation. No
 - [x] 320 / 390 / 430 / 768px mobile and desktop UI verification
 - [x] Public GitHub source
 - [x] Reddit OAuth login, authenticated as u/Rome6882
-- [x] Private Devvit app upload (v0.0.1)
+- [x] Private Devvit app upload and installation of v0.0.3 (2026-11-14 JST)
 - [x] Working test subreddit and owner-visible Reddit game post
 - [x] Real Reddit inline/expanded game display and tile rotation verified
 - [x] Subreddit moderator settings display Public (2026-11-14 JST)
@@ -68,3 +68,7 @@ AI assistance was used for design, implementation, testing and documentation. No
 - [x] Devpost sign-in via Google and explicit entrant authorization to accept the contest terms (2026-11-14 JST)
 - [x] Devpost competition registration and formal project submission (2026-11-14 JST; submission ID 1301614)
 - [ ] Prize award and payout, if any
+
+## 2026-11-14 deployment and external-access recheck
+
+After lint, build, TypeScript and all four regression checks passed, the CLI reported `Successfully installed version 0.0.3!` on `r/switchyard_rome_dev`. An anonymous headless Chrome verification encountered Reddit's regular **Prove your humanity** gate and did not bypass it. Public status is verified in moderator settings, but a normal external-user gameplay and two-account leaderboard test are still outstanding.
