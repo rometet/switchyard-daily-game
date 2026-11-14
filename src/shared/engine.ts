@@ -66,6 +66,12 @@ export function generateBoard(date: string): { base: number[][]; turns: number[]
     base.push(conn);
   }
   const turns = base.map(() => Math.floor(random() * 4));
+  // Rare seeds can accidentally connect the exit before any move.
+  // The source has one port and sits at the left edge; pointing that
+  // port west guarantees the game starts unsolved for every UTC date.
+  if (powerNetwork({ base, turns }).has(TARGET)) {
+    turns[SOURCE] = (3 - base[SOURCE]![0]! + 4) % 4;
+  }
   return { base, turns, path };
 }
 export function powerNetwork(board: { base: number[][]; turns: number[] }): Set<number> {

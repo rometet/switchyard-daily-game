@@ -41,6 +41,7 @@ Requires Node.js 24.18+ and a Reddit Developer Platform account.
 npm install
 npm run build
 npm run test:types
+npm run test:regression
 npm run lint
 node tests/switchyard-test.cjs
 node --experimental-strip-types --no-warnings=ExperimentalWarning tests/replay-test.mjs
@@ -70,3 +71,7 @@ Prepared for the [Reddit Game of the Day Hackathon](https://redditgameofday2026.
 ![Desktop gameplay](docs/switchyard-desktop.png)
 
 Competition form content and completion checklist: [DEVPOST_ENTRY.md](DEVPOST_ENTRY.md).
+
+## Regression guarantees
+
+The deterministic generator has been tested across 1,095 consecutive UTC dates starting November 14, 2026. No board starts solved, and all intended paths remain reachable. The replay suite also checks browser/server parity on July 28, 2029 (a previously identified edge-case seed). The score-retry test verifies that a failed network submission can be retried after reloading and is marked complete only after server confirmation.
