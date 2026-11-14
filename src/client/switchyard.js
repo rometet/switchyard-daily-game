@@ -27,7 +27,8 @@ if(idx<path.length-1)for(var e=0;e<4;e++)if(neighbor(i,e)===path[idx+1])connecti
 }else{var a=Math.floor(random()*4);connections=[a,(a+1+Math.floor(random()*3))%4]}
 goal[i]=connections;
 }
-tiles=goal.map(function(conns){return {base:conns.slice(),turn:Math.floor(random()*4)}})
+tiles=goal.map(function(conns){return {base:conns.slice(),turn:Math.floor(random()*4)}});
+if(powered().has(T)){tiles[S].turn=(3-tiles[S].base[0]+4)%4}
 }
 function connections(i){return rotate(tiles[i].base,tiles[i].turn)}
 function powered(){
@@ -52,7 +53,7 @@ button.setAttribute('aria-pressed',live.has(i)?'true':'false');button.innerHTML=
 el('moves').textContent=String(moves);el('flow').textContent=live.size+' / '+(N*N);el('streak').textContent=String(streak());
 el('hint').disabled=win;el('share').disabled=false;
 if(live.has(T)&&!win){win=true;el('hint').disabled=true;root.querySelectorAll('.tile').forEach(function(t){t.disabled=true});var sec=Math.max(1,Math.round((Date.now()-started)/1000));var s=currentStreak();
-el('status').className='message win';el('status').textContent='⚡ Circuit completed in '+moves+' rotations ('+hints+' hints). '+sec+'s. Streak: '+s+' day'+(s===1?'':'s')+'!';persist();if(rankedEligible&&!submitted){submitted=true;persist();postScore()}
+el('status').className='message win';el('status').textContent='⚡ Circuit completed in '+moves+' rotations ('+hints+' hints). '+sec+'s. Streak: '+s+' day'+(s===1?'':'s')+'!';persist();if(rankedEligible&&!submitted){postScore()}
 }else if(!win){el('status').className='message';el('status').textContent='Only connected wires carry power. Find the shortest route and light up the EXIT.'}
 }
 
@@ -71,30 +72,31 @@ function setLeaderboard(data){
 }
 function loadLeaderboard(){
  if(typeof fetch!=='function')return;
- fetch('/api/leaderboard',{credentials:'same-origin'}).then(function(r){if(!r.ok)throw Error('unavailable');return r.json()}).then(setLeaderboard).catch(function(){var elmt=el('leaderboard-list');if(elmt)elmt.textContent='Leaderboard appears after uploading the Reddit app.'});
+ fetch('/api/leaderboard',{credentials:'same-origin'}).then(function(r){if(!r.ok)throw Error('unavailable');return r.json()}).then(setLeaderboard).catch(function(){var elmt=el('leaderboard-list');if(elmt)elmt.textContent='Community scores are temporarily unavailable. The puzzle remains playable.'});
 }
 function postScore(){
  if(typeof fetch!=='function')return;
  el('retry').hidden=true;
  fetch('/api/score',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({day:utcDate,rotations:rotationLog})})
  .then(function(r){if(!r.ok)throw Error('Score not saved');return r.json()})
- .then(function(data){setLeaderboard(data);if(data.verified)el('status').textContent+=' 🏆 Verified score added to the Reddit leaderboard.'})
+ .then(function(data){setLeaderboard(data);if(data.verified){submitted=true;persist();el('status').textContent+=' 🏆 Verified score added to the Reddit leaderboard.'}})
  .catch(function(){submitted=false;persist();el('retry').hidden=false;el('status').textContent+=' (Local win saved; Reddit score unavailable. Tap Retry score.)'});
 }
 
-function rotateClick(evt){if(win)return;var i=Number(evt.currentTarget.dataset.index);tiles[i].turn=(tiles[i].turn+1)%4;moves++;rotationLog.push(i);if(rotationLog.length>250)rankedEligible=false;persist();render()}
+function rotateClick(evt){if(new Date().toISOString().slice(0,10)!==utcDate){location.reload();return}if(win)return;var i=Number(evt.currentTarget.dataset.index);tiles[i].turn=(tiles[i].turn+1)%4;moves++;rotationLog.push(i);if(rotationLog.length>250)rankedEligible=false;persist();render()}
 function currentStreak(){var yesterday=new Date(Date.parse(utcDate+'T00:00:00Z')-86400000).toISOString().slice(0,10);
 var count=1;try{var prev=JSON.parse(localStorage.getItem('switchyard-streak')||'{}');if(prev.last===utcDate)count=prev.count||1;else if(prev.last===yesterday)count=(prev.count||0)+1;localStorage.setItem('switchyard-streak',JSON.stringify({last:utcDate,count:count}))}catch(e){}return count}
-function hint(){if(win)return;var incorrect=path.filter(function(i){var x=connections(i).slice().sort().join(','),y=goal[i].slice().sort().join(',');return x!==y});
+function hint(){if(new Date().toISOString().slice(0,10)!==utcDate){location.reload();return}if(win)return;var incorrect=path.filter(function(i){var x=connections(i).slice().sort().join(','),y=goal[i].slice().sort().join(',');return x!==y});
 if(!incorrect.length){el('status').textContent='All intended path tiles are aligned. Rotate connected branches to complete the circuit.';return}
 var i=incorrect[Math.floor(random()*incorrect.length)],rotation=0;for(var t=0;t<4;t++){if(rotate(goal[i],t).slice().sort().join(',')===connections(i).slice().sort().join(',')){rotation=t;break}}
 var old=tiles[i].turn;for(var q=0;q<4;q++){if(rotate(tiles[i].base,q).slice().sort().join(',')===goal[i].slice().sort().join(',')){tiles[i].turn=q;break}}
 if(tiles[i].turn===old)return;rankedEligible=false;hints++;moves+=3;persist();render();var node=root.children[i];if(node){node.focus();node.style.boxShadow='0 0 0 2px #f4c46b';setTimeout(function(){node.style.boxShadow=''},900)}}
-function reset(){seed=hash('switchyard:'+utcDate);determine();moves=0;hints=0;win=false;rotationLog=[];rankedEligible=true;submitted=false;started=Date.now();persist();render()}
+function reset(){if(new Date().toISOString().slice(0,10)!==utcDate){location.reload();return}seed=hash('switchyard:'+utcDate);determine();moves=0;hints=0;win=false;rotationLog=[];rankedEligible=true;submitted=false;started=Date.now();persist();render()}
 async function share(){var text='SWITCHYARD '+utcDate+'\n'+(win?'⚡ Connected in '+moves+' rotations · '+hints+' hints':'🔧 Still connecting the circuit')+'\nPlay: '+shareTargetUrl;
 try{await navigator.clipboard.writeText(text);el('status').textContent='Result copied — share with your friends!'}catch(e){window.prompt('Copy this result:',text)}}
+document.addEventListener('visibilitychange',function(){if(!document.hidden&&new Date().toISOString().slice(0,10)!==utcDate)location.reload()});
 el('day').textContent='DAILY '+dayCode;determine();
 try{var saved=JSON.parse(localStorage.getItem(historyKey)||'null');if(saved&&Array.isArray(saved.turns)&&saved.turns.length===N*N){for(var i=0;i<N*N;i++){var v=Number(saved.turns[i]);if(Number.isInteger(v)&&v>=0&&v<=3)tiles[i].turn=v}moves=Number(saved.moves)||0;hints=Number(saved.hints)||0;started=Number(saved.started)||Date.now();win=Boolean(saved.win);rotationLog=Array.isArray(saved.rotationLog)?saved.rotationLog:[];rankedEligible=Boolean(saved.rankedEligible);submitted=Boolean(saved.submitted)}}catch(e){}
 if(win){var count=streak();el('status').className='message win';el('status').textContent='⚡ Today\'s circuit completed in '+moves+' rotations! Your streak: '+count+'.'}
-el('hint').addEventListener('click',hint);el('reset').addEventListener('click',reset);el('share').addEventListener('click',share);el('retry').addEventListener('click',function(){if(win&&rankedEligible&&!submitted){submitted=true;persist();postScore()}});render();loadLeaderboard();
+el('hint').addEventListener('click',hint);el('reset').addEventListener('click',reset);el('share').addEventListener('click',share);el('retry').addEventListener('click',function(){if(win&&rankedEligible&&!submitted){postScore()}});render();if(win&&rankedEligible&&!submitted)el('retry').hidden=false;loadLeaderboard();
 })();

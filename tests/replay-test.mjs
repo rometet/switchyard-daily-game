@@ -11,7 +11,7 @@ const html=readFileSync(path.join(root,'src/client/game.html'),'utf8');
 const js=readFileSync(path.join(root,'src/client/switchyard.js'),'utf8');
 const exposed=js.replace(/\}\)\(\);\s*$/,'window.__test={goal,tiles,rotationLog,path,connections};})();');
 assert.notEqual(js,exposed,'test hook injection must work');
-const dates=Array.from({length:30},(_,i)=>new Date(Date.UTC(2026,10,13+i)).toISOString().slice(0,10));
+const dates=Array.from({length:30},(_,i)=>new Date(Date.UTC(2026,10,13+i)).toISOString().slice(0,10)).concat(['2029-07-28']);
 for(const date of dates){
   const d=new JSDOM(html,{runScripts:'outside-only',url:'https://game.example/'});
   const OriginalDate=d.window.Date;
@@ -39,4 +39,4 @@ for(const date of dates){
   assert.equal(verifyReplay(date,[99]).ok,false,'invalid move rejected: '+date);
   d.window.close();
 }
-console.log('PASS: 30 UTC dates; browser/server boards identical; actual replay verified; forgery rejected');
+console.log('PASS: '+dates.length+' UTC dates; browser/server boards identical; actual replay verified; forgery rejected');

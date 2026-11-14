@@ -13,7 +13,8 @@
     "login": "devvit login",
     "prettier": "prettier --write .",
     "test:types": "tsc --build",
-    "test:unit": "node --experimental-strip-types --no-warnings=ExperimentalWarning --test \"src/**/*.test.ts\""
+    "test:unit": "node --experimental-strip-types --no-warnings=ExperimentalWarning --test \"src/**/*.test.ts\"",
+    "test:regression": "node tests/switchyard-test.cjs && node --experimental-strip-types --no-warnings=ExperimentalWarning tests/replay-test.mjs && node tests/score-retry-test.cjs && node --experimental-strip-types --no-warnings=ExperimentalWarning tests/long-horizon-audit.mjs"
   },
   "engines": {
     "node": ">=24.0.0"
@@ -38,6 +39,7 @@
     "eslint-plugin-react-hooks": "7.1.1",
     "eslint-plugin-react-refresh": "0.5.7",
     "globals": "17.14.0",
+    "jsdom": "24.1.0",
     "prettier": "3.9.10",
     "tailwindcss": "4.3.5",
     "typescript": "6.0.3",
