@@ -1,6 +1,6 @@
 # SWITCHYARD — Daily Circuit Puzzle for Reddit
 
-**Status (2026-11-14 JST):** Official entry **submitted** to the 2026 Reddit Game of the Day Hackathon: https://devpost.com/software/switchyard-daily-circuit-puzzle . Devvit app v0.0.1 was uploaded and Reddit playtest was successful. The subreddit moderator settings now display **Public** as of 2026-11-14 JST; actual judge-side gameplay should still be validated. No prize or payment is guaranteed.
+**Status (2026-11-14 JST):** Official entry **submitted** to the 2026 Reddit Game of the Day Hackathon: https://devpost.com/software/switchyard-daily-circuit-puzzle . Devvit app **v0.0.3** was privately uploaded and installed on r/switchyard_rome_dev on 2026-11-14 JST, after all local lint, build, typecheck, gameplay and long-horizon regression tests passed. The subreddit moderator settings now display **Public** as of 2026-11-14 JST; actual judge-side gameplay should still be validated. No prize or payment is guaranteed.
 
 SWITCHYARD is an original five-by-five daily circuit puzzle. Rotate each tile until electricity flows from START on the left to EXIT on the right. Everybody in the same UTC day plays the same solvable challenge. The game is free, mobile friendly, keyboard-accessible, and has a Discord-style shareable result.
 
@@ -47,7 +47,7 @@ node tests/switchyard-test.cjs
 node --experimental-strip-types --no-warnings=ExperimentalWarning tests/replay-test.mjs
 ```
 
-The app has been uploaded privately as **switchyard-rome** and installed on **r/switchyard_rome_dev**. Local code still uses the following authenticated Devvit developer workflow:
+The app was privately updated to **v0.0.3** (2026-11-14 JST) as **switchyard-rome** and the new version successfully installed on **r/switchyard_rome_dev**. Local code still uses the following authenticated Devvit developer workflow:
 
 ```bash
 npm run login
@@ -75,3 +75,6 @@ Competition form content and completion checklist: [DEVPOST_ENTRY.md](DEVPOST_EN
 ## Regression guarantees
 
 The deterministic generator has been tested across 1,095 consecutive UTC dates starting November 14, 2026. No board starts solved, and all intended paths remain reachable. The replay suite also checks browser/server parity on July 28, 2029 (a previously identified edge-case seed). The score-retry test verifies that a failed network submission can be retried after reloading and is marked complete only after server confirmation.
+## Judge-access verification note
+
+The subreddit moderator settings show **Public**, and Devvit CLI confirmed installation of app v0.0.3. An anonymous headless browser was stopped by Reddit's normal **Prove your humanity** challenge rather than a private-community warning; that check was not bypassed. An ordinary external human browser test and a second-user leaderboard test remain desirable before judging.
